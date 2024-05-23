@@ -1,0 +1,17 @@
+I have an ESL teaching background, and the reason why I chose this project is because I used to create a lot of memory games to use either in the classroom or as homework. 
+
+I have always tried to give my classes a very special touch, making them as immersive as possible. Students make unbelievable progress when they feel part of the class.
+
+That is why I came up with a feelings memory game, which can be used on kids from 2-8 years old. The exciting thing is that there won't be just any random pictures of different feelings, instead there'll be the student's faces miming diverse emotions.
+
+To do this, the game will have 2 different instances:
+1. Face recognition and image storing: here the students will be asked to do the mimic of the feeling name shown on the screen. A voice off will read the command. This will train the student's reading and listening skills, as well as it'll be more practical in terms of accessibility. By requiring the mimic, this task  involves body motion, which aligns perfectly well with my TPR (total physical response) method. 
+
+• TPR engages multiple senses by combining physical movement with language learning. This multi-modal approach improves memory retention, making it easier for students to recall vocabulary and grammar structures.
+• Students are physically involved in the lessons, which keeps them engaged and motivated throughout the class.
+• The interactive nature of TPR makes language learning enjoyable. Students often see TPR activities as games, which contributes to a positive classroom atmosphere.
+
+2. The memory game itself, using the collected images from the previous instance as the "feelings cards". Every time a card is flipped, there will be a sound effect that expresses that emotion, plus a voice off that reinforces pronunciation by repeating the feeling name. 
+
+To make this project a little bit easier from the beginning, I'll start with "basic" images, hoping to concrete my idea by the end of JS module 3 :)
+I've created the the logo of my educational website myself (which I also used as backside of the cards). I think the idea has some potential for the future, so I'd like to keep it :)
