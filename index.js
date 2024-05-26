@@ -11,13 +11,9 @@ const feelingsImgLink = {
     scared: "images/feelings/scared.png",
 }
 
-const feelingsImages = {}; //object that contains images to append
 const feelingsPairs = []; //this is to shuffle the cards internally
 
-for (const [feeling, src] of Object.entries(feelingsImgLink)) {
-const img = document.createElement("img");
-img.src = src;
-feelingsImages[feeling] = img;
+for (const feeling in feelingsImgLink) {
 feelingsPairs.push(feeling, feeling); //this is to have each feeling twice in an array that will be shuffled later
 }
 
