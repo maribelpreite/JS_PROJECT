@@ -11,51 +11,61 @@ const feelingsImgLink = {
     scared: "images/feelings/scared.png",
 }
 
-const feelingsPairs = []; //this is to shuffle the cards internally
+const feelingsPairs = Object.keys(feelingsImgLink).flatMap((feeling) => [feeling, feeling]); //implemented .map(), .filter() .forEach() and arrow function after js2 week 2 class
 
-for (const feeling in feelingsImgLink) {
-feelingsPairs.push(feeling, feeling); //this is to have each feeling twice in an array that will be shuffled later
-}
+//elements shuffling
+feelingsPairs.sort(() => Math.random() - 0.5); 
+
+// create a grid based on the order of shuffled feelings & store the references to the dom elements in an array to create event listeners for each tile ------> (this was actually very difficult to understand especially bc as the array is created, it also executes the function and actually appends the cards to tilesContainer. I thought I needed make the function run first with feelingPairs.forEach((feeling) => buildTile(feeling)) and create an array afterwards to store the elements for each feeling, but if I do both, the website goes awkward)
+const tileElements = feelingsPairs.map(feeling => buildTile(feeling));
 
 //create each tile
 function buildTile (feeling) {
-    const card = document.createElement("img");
-    card.src = "images/square_backside_pattern.png"
+    const cardContainer = document.createElement("div");
+    cardContainer.setAttribute("data-feeling", feeling) // this is to know which feeling is asigned to the card, whether it is revealed or not -> MY PROBLEM IS THAT I CAN'T SEE THE ELEMENTS IN THE INSPECT SECTION :(
+    tilesContainer.appendChild(cardContainer);
 
-    card.classList.add("card");
-    card.setAttribute("data-feeling", feeling) // this is to know which feeling is asigned to the card, whether it is revealed or not
-    tilesContainer.appendChild(card); //maybe we need to get this out of the function & put it in the for loop
+    const cardBackside = document.createElement("img");
+    cardBackside.src = "images/square_backside_pattern.png";
+    cardBackside.classList.add("card-image");
+    cardContainer.appendChild(cardBackside);
 
+    const cardFront = document.createElement("img")
+    cardFront.src = feelingsImgLink[feeling];
+    cardFront.classList.add("card-image");
+
+    return {
+        cardContainer,
+        cardBackside,
+        cardFront,
+    }
+}
+
+//create event listeners for each tile
+tileElements.forEach(({cardContainer, cardBackside, cardFront}) => {
     let unrevealedCard = true; //toggle between states
-    card.addEventListener("click", () => {
+
+    cardContainer.addEventListener("click", () => {
+        if (!cardContainer.classList.contains("animation")) {
+            cardContainer.classList.remove("animation"); //remove the animation if it's running to start it all over again in case of double-clicks
+        } 
+
         if (unrevealedCard) {
-            card.src = feelingsImgLink[feeling];
-            unrevealedCard = false;
-            
+            cardContainer.removeChild(cardBackside);
+            cardContainer.appendChild(cardFront);
         } else {
-            card.src = "images/square_backside_pattern.png";
-            unrevealedCard = true;
-            
+            cardContainer.removeChild(cardFront);
+            cardContainer.appendChild(cardBackside);
         }
 
-        //add animation no matter the click
-        card.classList.add("animation"); //i got this animation from a css animation builder 
+        unrevealedCard = !unrevealedCard //this will make sure that if it's true, it'll change to false and viceversa
+
+        //add animation class to start animation
+        cardContainer.classList.add("animation"); //i got this animation from a css animation builder
 
         //remove it so the class is added and the animation triggered every time there's a click. the delay time matches the duration of the animation (0.75s)
         setTimeout(() => {
-            card.classList.remove("animation")
+            cardContainer.classList.remove("animation")
         }, 750);
     })
-}
-
-//tiles shuffling & access to images
-const tilesCount = feelingsPairs.length;
-
-for (let i=0; i<tilesCount; i++) { //tilesCount has to be here before the feelingsPairs.length changes
-    const randomIndex = Math.floor(Math.random() * feelingsPairs.length); //this number has to depend directly on the length
-    const feeling = feelingsPairs[randomIndex];
-
-    feelingsPairs.splice(randomIndex, 1);
-
-    buildTile(feeling);
-}
+})
