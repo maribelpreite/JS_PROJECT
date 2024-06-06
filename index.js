@@ -41,24 +41,24 @@ function buildTile (feeling) {
     }
 }
 
+//game status
+let activeTile = null;
+let awaitingMove = false;
+
 //create event listeners for each tile
 tileElements.forEach(({cardContainer, cardBackside, cardFront}) => {
-    let unrevealedCard = true; //toggle between states
 
     cardContainer.addEventListener("click", () => {
+        if (awaitingMove) { //the little time window that checks similarities between 2 cards where tiles can't be nastily clicked
+            return;
+        }
+
         if (!cardContainer.classList.contains("animation")) {
             cardContainer.classList.remove("animation"); //remove the animation if it's running to start it all over again in case of double-clicks
         } 
 
-        if (unrevealedCard) {
-            cardContainer.removeChild(cardBackside);
-            cardContainer.appendChild(cardFront);
-        } else {
-            cardContainer.removeChild(cardFront);
-            cardContainer.appendChild(cardBackside);
-        }
-
-        unrevealedCard = !unrevealedCard //this will make sure that if it's true, it'll change to false and viceversa
+        cardContainer.removeChild(cardBackside);
+        cardContainer.appendChild(cardFront);
 
         //add animation class to start animation
         cardContainer.classList.add("animation"); //i got this animation from a css animation builder
@@ -67,5 +67,32 @@ tileElements.forEach(({cardContainer, cardBackside, cardFront}) => {
         setTimeout(() => {
             cardContainer.classList.remove("animation")
         }, 750);
+
+        if (!activeTile) { //this is to compare the second tile selected and find the match
+            activeTile = cardContainer;
+            return;
+        }
+
+        awaitingMove = true; //block the possibility of any movement when there's an active tile
+
+        //we'll reach this point only if there's an active tile
+        setTimeout(() => {
+            //create variables to compare them and behave differently depending on the match
+            const activeFeeling = activeTile.getAttribute("data-feeling");
+            const currentFeeling = cardContainer.getAttribute("data-feeling");
+
+            //if there isn't a match, flip both cards back
+            if (activeFeeling !== currentFeeling) {
+                activeTile.removeChild(activeTile.querySelector(".card-image"));
+                activeTile.appendChild(cardBackside);
+
+                cardContainer.removeChild(cardFront);
+                cardContainer.appendChild(cardBackside);
+            }
+
+            //restate the game status
+            activeTile = null;
+            awaitingMove = false;
+        }, 1000);
     })
 })
