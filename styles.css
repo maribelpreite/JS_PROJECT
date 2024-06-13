@@ -10,15 +10,36 @@ body {
 
 .tiles {
     margin: 3rem auto;
-    width: max-content;
+    width: fit-content;
     display: grid;
     grid-template-columns: repeat(4, 12.5rem);
     gap: 1rem;
 }
 
+.card-container {
+    position: relative;
+    width: 12.5rem;
+    height: 12.5rem;
+    perspective: 1000px; 
+}
+
 .card-image {
     max-width: 100%;
     cursor: pointer;
+    position: absolute;
+    backface-visibility: hidden; 
+}
+
+.frontside {
+    transform: rotateY(180deg);
+}
+
+.card-container.flipped .frontside {
+    display: block; 
+}
+
+.card-container.flipped .backside {
+    display: none;
 }
 
 .animation {
