@@ -17,61 +17,32 @@ body {
 }
 
 .card-container {
-    position: relative;
+    position: relative; /*reference point for the child elements -the images-*/
     width: 12.5rem;
     height: 12.5rem;
-    perspective: 1000px; 
+    perspective: 1000px; /*gives a 3d space effect*/
 }
 
 .card-image {
     max-width: 100%;
     cursor: pointer;
-    position: absolute;
-    backface-visibility: hidden; 
+    position: absolute; /*to layer the cards one on top of the other */
+    backface-visibility: hidden; /* to hide the frontside when not clicked */
+    transition: transform 0.6s; /*to make the transformation (flip) smooth over 0.6 seconds */
 }
 
 .frontside {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg); /*default: the front side of the card is hidden as it is aligned with the Y axis*/
+}
+
+.backside {
+    transform: rotateY(0deg); /*default: the back side of the card is visible*/
 }
 
 .card-container.flipped .frontside {
-    display: block; 
+    transform: rotateY(0deg); 
 }
 
 .card-container.flipped .backside {
-    display: none;
-}
-
-.animation {
-    animation: myAnim 0.75s ease 0s 1 normal forwards; 
-}
-
-@keyframes myAnim {
-	0% {
-		transform: scale3d(1, 1, 1);
-	}
-
-	30% {
-		transform: scale3d(1.25, 0.75, 1);
-	}
-
-	40% {
-		transform: scale3d(0.75, 1.25, 1);
-	}
-
-	50% {
-		transform: scale3d(1.15, 0.85, 1);
-	}
-
-	65% {
-		transform: scale3d(0.95, 1.05, 1);
-	}
-
-	75% {
-		transform: scale3d(1.05, 0.95, 1);
-	}
-
-	100% {
-		transform: scale3d(1, 1, 1);
-	}
+    transform: rotateY(-180deg);
 }

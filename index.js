@@ -1,28 +1,27 @@
 const tilesContainer = document.querySelector(".tiles");
 
-//memotest images
+async function getData() {
+    const response = await fetch("https://raw.githubusercontent.com/maribelpreite/maribelpreite.github.io/main/data/feelings.json")
+    
+    const feelingsImgLink = await response.json();
+    
+    //creating an array of feelings and shuffling it:
+    const feelingsPairs = Object.keys(feelingsImgLink).flatMap((feeling) => [feeling, feeling]); 
+    feelingsPairs.sort(() => Math.random() - 0.5); 
 
-const feelingsImgLink = {
-    happy: "images/feelings/happy.png",
-    sad: "images/feelings/sad.png", 
-    angry: "images/feelings/angry.png",
-    hungry: "images/feelings/hungry.png",
-    thirsty: "images/feelings/thirsty.png",
-    scared: "images/feelings/scared.png",
+    // create a grid based on the order of shuffled feelings
+    const tileElements = feelingsPairs.map(feeling => buildTile(feeling, feelingsImgLink));
+
+    //create event listeners for each tile
+    tileElements.forEach(({cardContainer}) => clickingInteractions(cardContainer));
 }
 
-const feelingsPairs = Object.keys(feelingsImgLink).flatMap((feeling) => [feeling, feeling]); 
 
-//elements shuffling
-feelingsPairs.sort(() => Math.random() - 0.5); 
-
-// create a grid based on the order of shuffled feelings & store the references to the dom elements in an array to create event listeners for each tile
-const tileElements = feelingsPairs.map(feeling => buildTile(feeling));
-
-//create each tile
-function buildTile (feeling) {
+//create each tile & return the reference to the DOM element to access it in other function
+function buildTile (feeling, feelingsImgLink) {
     const cardContainer = document.createElement("div");
     cardContainer.setAttribute("data-feeling", feeling) // this is to know which feeling is asigned to the card
+    cardContainer.classList.add("card-container");
     tilesContainer.appendChild(cardContainer);
 
     const cardBackside = document.createElement("img");
@@ -43,7 +42,7 @@ let activeTile = null;
 let awaitingMove = false;
 
 //create event listeners for each tile
-tileElements.forEach(({cardContainer}) => {
+function clickingInteractions(cardContainer) {
 
     cardContainer.addEventListener("click", () => {
         if (awaitingMove || cardContainer.classList.contains("flipped")) { 
@@ -76,4 +75,6 @@ tileElements.forEach(({cardContainer}) => {
             awaitingMove = false;
         }, 1000);
     })
-})
+}
+
+getData();
