@@ -8,8 +8,52 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <div class="tiles">
-        
+    <div class="main-container">
+        <header>
+            <p class ="game-title">MEMOTEST</p>
+        </header>
+        <div class="game-content">
+            <div id="difficulty-container" class="banner-container show-container">
+                <p class="game-subtitle">Select Difficulty:</p>
+                <div class="difficulty-options">
+                    <label for="easy" class="game-subtitle">
+                        <input type="radio" name="difficulty" value="easy" id="easy" checked>
+                        Easy
+                    </label>
+                    <label for="medium" class="game-subtitle">
+                        <input type="radio" name="difficulty" value="medium" id="medium">
+                        Medium
+                    </label>
+                    <label for="hard" class="game-subtitle">
+                        <input type="radio" name="difficulty" value="hard" id="hard">
+                        Hard
+                    </label>
+                </div>
+                <button id="start-game">Start Game</button>
+            </div>
+            <div id="active-game-container" class="hide-container">
+                <div id ="subheader-container">
+                    <div id = "moves-container" class="rules-container">
+                        <p class = "rules-introductory-text">Moves: </p>
+                        <p id = "moves-counter" class="rules-value"></p>
+                    </div>
+                    <div id = "timer-container" class="rules-container">
+                        <p class = "rules-introductory-text">Time: </p>
+                        <p id = "time-counter" class="rules-value"></p>
+                    </div>
+                </div>
+                <div class="tiles">
+                </div>
+            </div>
+            <div id ="you-lost-msg" class="end-game banner-container hide-container">
+                <p class="game-subtitle">YOU LOSE!</p>
+                <button class="reset-button">PLAY AGAIN</button>
+            </div>
+            <div id ="you-won-msg" class="end-game banner-container hide-container">
+                <p class="game-subtitle">YOU WIN!</p>
+                <button class="reset-button">PLAY AGAIN</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
